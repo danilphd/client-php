@@ -18,6 +18,17 @@ foreach ($couriersResponse as $courier) {
     echo $courier->getCountryCode() . ' ' . $courier->getName() . ' ' . $courier->getTrackingNumber() . "\n";
 };
 
+echo "\nGet trackings list\n";
+$trackList = $client->getTrackingList('default');
+foreach ($trackList->getTrackings() as $trackInfo) {
+    echo $trackInfo->getLastCheck()->format('Y-m-d H:i:s') . ' ' . $trackInfo->getTrackingNumber() . ' ' . $trackInfo->getTitle() . "\n";
+    if ($trackInfo->getLastCheckpoint()) {
+        $checkpoint = $trackInfo->getLastCheckpoint();
+        echo $checkpoint->getCountryCode() . ' ' . $checkpoint->getLocation() . ' ' . $checkpoint->getTime()->format('r') . ' '
+            . $checkpoint->getStatus() . ' ' . $checkpoint->getMessage() . "\n";
+    }
+};
+
 $trackingNumber = 'EC208786464US';
 
 echo "\nCreate tracking for number and courier:\n";
@@ -42,6 +53,14 @@ foreach ($trackInfo->getCheckpoints() as $checkpoint) {
 
 echo "\nReactivate tracking for number and courier:\n";
 $track = $client->reactivateTracking($courierSlug, $trackingNumber);
+echo $track->getCourierSlug(), ' ', $track->getTrackingNumber(), "\n";
+
+echo "\nArchive tracking for number and courier:\n";
+$track = $client->archiveTracking($courierSlug, $trackingNumber);
+echo $track->getCourierSlug(), ' ', $track->getTrackingNumber(), "\n";
+
+echo "\nRestore tracking for number and courier:\n";
+$track = $client->restoreTracking($courierSlug, $trackingNumber);
 echo $track->getCourierSlug(), ' ', $track->getTrackingNumber(), "\n";
 
 echo "\nDelete tracking for number and courier:\n";

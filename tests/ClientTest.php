@@ -102,6 +102,44 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTrackingInfo()
     {
+        $response = $this->getClient()->getTrackingList('default');
+        $this->assertInstanceOf('\GdePosylka\Client\Response\TrackingListResponse', $response);
+        $this->assertNotEmpty($response->getTrackings());
+        foreach ($response->getTrackings() as $tracking) {
+            $this->assertInstanceOf('\GdePosylka\Client\Response\TrackingInfoShortResponse', $tracking);
+            $this->assertNotEmpty($tracking->getTrackingNumber());
+            $this->assertNotEmpty($tracking->getCourierSlug());
+            $this->assertNotEmpty($tracking->getLastCheck());
+            $this->assertInternalType('boolean', $tracking->isDelivered());
+            $this->assertInstanceOf('\DateTime', $tracking->getLastCheck());
+            if ($tracking->getLastCheckpoint()) {
+                $checkpoints = $tracking->getLastCheckpoint();
+                $this->assertNotEmpty($checkpoints->getTime());
+                $this->assertInstanceOf('\DateTime', $checkpoints->getTime());
+                $this->assertNotEmpty($checkpoints->getStatus());
+                $this->assertThat(
+                    $checkpoints->getLocation(),
+                    $this->logicalOr(
+                        $this->logicalNot($this->isEmpty()),
+                        $this->isNull()
+                    )
+                );
+                $this->assertThat(
+                    $checkpoints->getZipCode(),
+                    $this->logicalOr(
+                        $this->logicalNot($this->isEmpty()),
+                        $this->isNull()
+                    )
+                );
+                $this->assertNotEmpty($checkpoints->getCountryCode());
+                $this->assertNotEmpty($checkpoints->getCourierSlug());
+                $this->assertNotEmpty($checkpoints->getMessage());
+            }
+        }
+    }
+
+    public function testGetTrackingList()
+    {
         $response = $this->getClient()->getTrackingInfo(self::USPS_SLUG, self::USPS_TRACKING_NUMBER);
         $this->assertInstanceOf('\GdePosylka\Client\Response\TrackingInfoResponse', $response);
         $this->assertNotEmpty($response->getTrackingNumber());
@@ -140,6 +178,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\GdePosylka\Client\Response\TrackingResponse', $response);
         $this->assertNotEmpty($response->getCourierSlug());
         $this->assertNotEmpty($response->getTrackingNumber());;
+    }
+
+    public function testArchive()
+    {
+        $response = $this->getClient()->archiveTracking(self::USPS_SLUG, self::USPS_TRACKING_NUMBER);
+        $this->assertInstanceOf('\GdePosylka\Client\Response\TrackingResponse', $response);
+        $this->assertNotEmpty($response->getCourierSlug());
+        $this->assertNotEmpty($response->getTrackingNumber());
+    }
+
+    public function testRestore()
+    {
+        $response = $this->getClient()->restoreTracking(self::USPS_SLUG, self::USPS_TRACKING_NUMBER);
+        $this->assertInstanceOf('\GdePosylka\Client\Response\TrackingResponse', $response);
+        $this->assertNotEmpty($response->getCourierSlug());
+        $this->assertNotEmpty($response->getTrackingNumber());
     }
 
     public function testDelete()

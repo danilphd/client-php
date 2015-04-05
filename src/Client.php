@@ -85,6 +85,18 @@ class Client
     }
 
     /**
+     * @param string $page
+     * @return Response\TrackingListResponse
+     * @throws \Exception
+     * @throws \Guzzle\Common\Exception\GuzzleException
+     */
+    public function getTrackingList($page = 'default')
+    {
+        $tracking = array('page' => $page);
+        return new Response\TrackingListResponse($this->getRequest()->call('getTrackingList', $tracking));
+    }
+
+    /**
      * @param $courierSlug
      * @param $trackingNumber
      * @throws Exception\EmptyCourierSlug
@@ -126,6 +138,44 @@ class Client
             $tracking = array_merge($tracking, $fields->toArray());
         }
         return new Response\TrackingResponse($this->getRequest()->call('updateTracking', array('tracking' => $tracking)));
+    }
+
+    /**
+     * @param $courierSlug
+     * @param $trackingNumber
+     * @return Response\TrackingResponse
+     * @throws Exception\EmptyCourierSlug
+     * @throws Exception\EmptyTrackingNumber
+     */
+    public function archiveTracking($courierSlug, $trackingNumber)
+    {
+        if (empty($courierSlug)) {
+            throw new Exception\EmptyCourierSlug;
+        }
+        if (empty($trackingNumber)) {
+            throw new Exception\EmptyTrackingNumber;
+        }
+        $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
+        return new Response\TrackingResponse($this->getRequest()->call('archiveTracking', $tracking));
+    }
+
+    /**
+     * @param $courierSlug
+     * @param $trackingNumber
+     * @return Response\TrackingResponse
+     * @throws Exception\EmptyCourierSlug
+     * @throws Exception\EmptyTrackingNumber
+     */
+    public function restoreTracking($courierSlug, $trackingNumber)
+    {
+        if (empty($courierSlug)) {
+            throw new Exception\EmptyCourierSlug;
+        }
+        if (empty($trackingNumber)) {
+            throw new Exception\EmptyTrackingNumber;
+        }
+        $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
+        return new Response\TrackingResponse($this->getRequest()->call('restoreTracking', $tracking));
     }
 
     /**
