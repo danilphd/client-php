@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Request
 {
-    private $apiUrl = 'http://api.delta.gdeposylka.ru/v2/jsonrpc';
+    private $apiUrl = 'http://kappa.gdeposylka.ru/v2/jsonrpc';
     protected $apiKey = '';
     protected $guzzlePlugins = array();
     private $client;
