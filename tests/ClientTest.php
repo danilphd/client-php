@@ -110,7 +110,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $this->assertNotEmpty($tracking->getTrackingNumber());
             $this->assertNotEmpty($tracking->getCourierSlug());
             $this->assertNotEmpty($tracking->getLastCheck());
-            $this->assertNotEmpty($tracking->getLastCheck());
             $this->assertInternalType('boolean', $tracking->isDelivered());
             $this->assertInstanceOf('\DateTime', $tracking->getLastCheck());
             if ($tracking->getLastCheckpoint()) {
