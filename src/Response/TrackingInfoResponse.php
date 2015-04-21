@@ -80,4 +80,20 @@ class TrackingInfoResponse extends AbstractResponse
     {
         return !empty($this->data['title']) ? $this->data['title'] : '';
     }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->data['status'];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->data['is_active'];
+    }
 }

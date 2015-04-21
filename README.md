@@ -14,7 +14,7 @@ The recommended way to install is through [Composer](http://getcomposer.org).
 curl -sS https://getcomposer.org/installer | php
 
 # Add as a dependency
-php composer.phar require gdeposylka/client:dev-master
+php composer.phar require gdeposylka/api-client:dev-master
 ```
 
 After installing, you need to require Composer's autoloader:
