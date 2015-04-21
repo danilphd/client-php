@@ -12,8 +12,8 @@ class TrackingInfoShortResponse extends AbstractResponse
     {
         parent::__construct($data);
 
-        if ($this->data['lastCheckpoint']) {
-            $this->lastCheckpoint = new CheckpointResponse(array('result' => $this->data['lastCheckpoint']));
+        if ($this->data['last_checkpoint']) {
+            $this->lastCheckpoint = new CheckpointResponse(array('result' => $this->data['last_checkpoint']));
         }
     }
 

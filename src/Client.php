@@ -85,14 +85,15 @@ class Client
     }
 
     /**
-     * @param string $page
+     * @param string $filter
+     * @param int $page
      * @return Response\TrackingListResponse
      * @throws \Exception
      * @throws \Guzzle\Common\Exception\GuzzleException
      */
-    public function getTrackingList($page = 'default')
+    public function getTrackingList($filter = 'default', $page = 1)
     {
-        $tracking = array('page' => $page);
+        $tracking = array('filter' => $filter, 'page' => $page);
         return new Response\TrackingListResponse($this->getRequest()->call('getTrackingList', $tracking));
     }
 
@@ -112,7 +113,7 @@ class Client
             throw new Exception\EmptyTrackingNumber;
         }
         $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
-        return new Response\TrackingInfoResponse($this->getRequest()->call('getTrackingInfo', $tracking));
+        return new Response\TrackingInfoResponse($this->getRequest()->call('getTrackingInfo', array('tracking' => $tracking)));
     }
 
     /**
@@ -156,7 +157,7 @@ class Client
             throw new Exception\EmptyTrackingNumber;
         }
         $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
-        return new Response\TrackingResponse($this->getRequest()->call('archiveTracking', $tracking));
+        return new Response\TrackingResponse($this->getRequest()->call('archiveTracking', array('tracking' => $tracking)));
     }
 
     /**
@@ -175,7 +176,7 @@ class Client
             throw new Exception\EmptyTrackingNumber;
         }
         $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
-        return new Response\TrackingResponse($this->getRequest()->call('restoreTracking', $tracking));
+        return new Response\TrackingResponse($this->getRequest()->call('restoreTracking', array('tracking' => $tracking)));
     }
 
     /**
@@ -194,7 +195,7 @@ class Client
             throw new Exception\EmptyTrackingNumber;
         }
         $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
-        return new Response\TrackingResponse($this->getRequest()->call('deleteTracking', $tracking));
+        return new Response\TrackingResponse($this->getRequest()->call('deleteTracking', array('tracking' => $tracking)));
     }
 
     /**
@@ -213,6 +214,6 @@ class Client
             throw new Exception\EmptyTrackingNumber;
         }
         $tracking = array('tracking_number' => $trackingNumber, 'courier_slug' => $courierSlug);
-        return new Response\TrackingResponse($this->getRequest()->call('reactivateTracking', $tracking));
+        return new Response\TrackingResponse($this->getRequest()->call('reactivateTracking', array('tracking' => $tracking)));
     }
 }

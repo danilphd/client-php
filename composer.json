@@ -4,7 +4,7 @@
     "description": "Official GdePosylka API client",
     "homepage": "http://gdeposylka.ru/tracking-api",
     "license": "GNU LGPL",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "require" : {
         "php": ">=5.3.0",
         "guzzle/guzzle": "3.9.*"

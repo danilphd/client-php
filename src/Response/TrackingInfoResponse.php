@@ -6,7 +6,12 @@ class TrackingInfoResponse extends AbstractResponse
     /**
      * @var CheckpointResponse[]
      */
-    private $checkpoints;
+    private $checkpoints = [ ];
+
+    /**
+     * @var TrackingExtraResponse[]
+     */
+    private $extra = [ ];
 
     public function __construct($data)
     {
@@ -14,6 +19,9 @@ class TrackingInfoResponse extends AbstractResponse
 
         foreach ($this->data['checkpoints'] as $checkpoint) {
             $this->checkpoints[] = new CheckpointResponse(array('result' => $checkpoint));
+        }
+        foreach ($this->data['extra'] as $extra) {
+            $this->extra[] = new TrackingExtraResponse(array('result' => $extra));
         }
     }
 
@@ -23,6 +31,14 @@ class TrackingInfoResponse extends AbstractResponse
     public function getCheckpoints()
     {
         return $this->checkpoints;
+    }
+
+    /**
+     * @return TrackingExtraResponse[]
+     */
+    public function getExtra()
+    {
+        return $this->extra;
     }
 
     /**

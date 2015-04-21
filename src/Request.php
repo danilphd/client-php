@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Request
 {
-    private $apiUrl = 'http://kappa.gdeposylka.ru/v2/jsonrpc';
+    private $apiUrl = 'http://gdeposylka.ru/api/v3/jsonrpc';
     protected $apiKey = '';
     protected $guzzlePlugins = array();
     private $client;
@@ -44,7 +44,6 @@ class Request
      * @param int $id
      * @throws \Exception
      * @throws \Guzzle\Common\Exception\GuzzleException
-     * @internal param array $data
      * @return array|bool|float|int|string
      */
     public function call($method, $params = array(), $id = 1)

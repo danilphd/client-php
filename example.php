@@ -18,8 +18,16 @@ foreach ($couriersResponse as $courier) {
     echo $courier->getCountryCode() . ' ' . $courier->getName() . ' ' . $courier->getTrackingNumber() . "\n";
 };
 
+$couriersResponse = $client->getValidCouriers($trackingNumber)->getCouriers();
+echo "\nList valid couriers:\n";
+// list detected couriers
+foreach ($couriersResponse as $courier) {
+    echo $courier->getCountryCode() . ' ' . $courier->getName() . ' ' . $courier->getTrackingNumber() . "\n";
+};
+
 echo "\nGet trackings list\n";
 $trackList = $client->getTrackingList('default');
+echo $trackList->getCountTotal(), ' ', $trackList->getCurrentPage(), ' ', $trackList->getCountOnPage(), "\n";
 foreach ($trackList->getTrackings() as $trackInfo) {
     echo $trackInfo->getLastCheck()->format('Y-m-d H:i:s') . ' ' . $trackInfo->getTrackingNumber() . ' ' . $trackInfo->getTitle() . "\n";
     if ($trackInfo->getLastCheckpoint()) {
@@ -49,6 +57,10 @@ echo $trackInfo->getLastCheck()->format('Y-m-d H:i:s') . ' ' . $trackInfo->getTi
 foreach ($trackInfo->getCheckpoints() as $checkpoint) {
     echo $checkpoint->getCountryCode() . ' ' . $checkpoint->getLocation() . ' ' . $checkpoint->getTime()->format('r') . ' '
         . $checkpoint->getStatus() . ' ' . $checkpoint->getMessage() . "\n";
+};
+foreach ($trackInfo->getExtra() as $extra) {
+    $data = $extra->getData();
+    echo $extra->getCourierSlug(), ' ', json_encode($data) . "\n";
 };
 
 echo "\nReactivate tracking for number and courier:\n";
