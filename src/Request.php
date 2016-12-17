@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Request
 {
-    private $apiUrl = 'http://gdeposylka.ru/api/v3/jsonrpc';
+    private $apiUrl = 'http://gdeposylka.ru/api/v4';
     protected $apiKey = '';
     protected $guzzlePlugins = array();
     private $client;
@@ -39,29 +39,23 @@ class Request
     }
 
     /**
-     * @param $method
-     * @param array $params
-     * @param int $id
-     * @throws \Exception
-     * @throws \Guzzle\Common\Exception\GuzzleException
+     * @param $uri
+     * @param string $method
+     * @param array $options
      * @return array|bool|float|int|string
+     * @throws GuzzleException
      */
-    public function call($method, $params = array(), $id = 1)
+    public function call($path, $method = 'GET', $options = array())
     {
         $headers = array(
             'x-authorization-token' => $this->apiKey,
             'content-type' => 'application/json'
         );
-
-        $request = array(
-            'jsonrpc' => '2.0',
-            'method' => $method,
-            'params' => $params,
-            'id' => $id
-        );
+        
+        $uri = sprintf("%s/%s", $this->apiUrl, $path);
 
         try {
-            $request = $this->client->post($this->apiUrl, $headers, json_encode($request));
+            $request = $this->client->createRequest($method, $uri, $headers, null, $options);
             $response = $request->send()->json();
         } catch (BadResponseException $exception) {
             $response = $exception->getResponse()->json();

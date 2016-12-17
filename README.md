@@ -1,8 +1,6 @@
 Official GdePosylka API client
 ================================================
 
-try v4
-
 [GdePosylka](http://gdeposylka.ru/ "gdeposylka.ru") is a shipment tracking service.
 
 See example.php file for usage example.

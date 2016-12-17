@@ -18,10 +18,16 @@ class TrackingInfoResponse extends AbstractResponse
         parent::__construct($data);
 
         foreach ($this->data['checkpoints'] as $checkpoint) {
-            $this->checkpoints[] = new CheckpointResponse(array('result' => $checkpoint));
+            $this->checkpoints[] = new CheckpointResponse([
+                'result' => 'success',
+                'data' => $checkpoint,
+            ]);
         }
         foreach ($this->data['extra'] as $extra) {
-            $this->extra[] = new TrackingExtraResponse(array('result' => $extra));
+            $this->extra[] = new TrackingExtraResponse([
+                'result' => 'success',
+                'data' => $extra,
+            ]);
         }
     }
 
